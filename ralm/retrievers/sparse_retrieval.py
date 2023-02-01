@@ -18,9 +18,11 @@ class SparseRetriever(BaseRetriever):
 
     def _get_searcher(self, index_name):
         try:
-            return LuceneSearcher.from_prebuilt_index(index_name, verbose=True)
+            print(f"Attempting to download the index as if prebuilt by pyserini")
+            return LuceneSearcher.from_prebuilt_index(index_name)
         except ValueError:
-            print(f"Attempting to treat the index as a directory (not prebuilt by pyserini)")
+            print(f"Index does not exist in pyserini.")
+            print("Attempting to treat the index as a directory (not prebuilt by pyserini)")
             return LuceneSearcher(index_name)
 
     def _get_forbidden_titles(self, forbidden_titles_path):
