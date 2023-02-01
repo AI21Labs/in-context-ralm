@@ -4,11 +4,11 @@ def add_retriever_args(parser, retriever_type):
         parser.add_argument("--index_name", type=str, default="wikipedia-dpr")
         parser.add_argument("--num_tokens_for_query", type=int, default=32)
         parser.add_argument("--shift_query_num_tokens", type=int, default=0)
-        parser.add_argument("--forbidden_titles_path", type=str, default="data/wiki103_forbidden_titles.txt")
+        parser.add_argument("--forbidden_titles_path", type=str, default="ralm/retrievers/wikitext103_forbidden_titles.txt")
         parser.add_argument("--retrieve_future", action="store_true")
 
     elif retriever_type == "dense":
-        parser.add_argument("--model_type", type=str, default="bert", choices=["bert", "dpr"])
+        parser.add_argument("--model_type", type=str, default="bert", choices=["bert", "spider"])
         parser.add_argument("--model_name", type=str, required=True)
         parser.add_argument("--encoded_files", type=str, required=True)
         parser.add_argument("--corpus_path", type=str, required=True)
@@ -16,7 +16,7 @@ def add_retriever_args(parser, retriever_type):
         parser.add_argument("--pooling", type=str, default="cls", choices=["cls", "mean"])
         parser.add_argument("--batch_size", type=int, default=2048)
         parser.add_argument("--fp16", action="store_true")
-        parser.add_argument("--forbidden_titles_path", type=str, default="data/wiki103_forbidden_titles.txt")
+        parser.add_argument("--forbidden_titles_path", type=str, default="ralm/retrievers/wikitext103_forbidden_titles.txt")
 
     else:
         raise ValueError

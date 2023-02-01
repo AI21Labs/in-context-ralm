@@ -2,6 +2,7 @@ import json
 import sys
 import argparse
 
+from datasets import load_dataset
 from tqdm import tqdm
 from transformers import AutoTokenizer
 
@@ -22,8 +23,12 @@ def main(args):
     tokenizer = AutoTokenizer.from_pretrained(args.tokenizer_name)
 
     print("Loading dataset...")
-    with open(args.dataset_path, "r") as f:
-        dataset = f.read()
+    if args.load_from == "hf":
+        dataset = load_dataset(args.dataset_path, args.dataset_name, split=args.dataset_split)
+        dataset = "".join([x["text"] if x["text"] else " \n" for x in dataset])
+    else:
+        with open(args.dataset_path, "r") as f:
+            dataset = f.read()
     encodings = tokenizer(dataset, add_special_tokens=False, return_tensors="pt")
     dataset_len = encodings.input_ids.size(1)
     print("Dataset length:", dataset_len)
@@ -69,7 +74,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--output_file", required=True, type=str)
-    parser.add_argument("--dataset_path", required=True, type=str)
+
+    # Dataset params
+    parser.add_argument("--load_from", type=str, choices=["hf", "file"], default="hf")
+    parser.add_argument("--dataset_path", type=str, required=True)
+    parser.add_argument("--dataset_name", type=str, default=None)
+    parser.add_argument("--dataset_split", type=str, default="test")
 
     # Model params
     parser.add_argument("--tokenizer_name", type=str, default="gpt2")

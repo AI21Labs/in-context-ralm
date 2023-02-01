@@ -9,12 +9,19 @@ class SparseRetriever(BaseRetriever):
     def __init__(self, tokenizer, index_name, num_tokens_for_query,
                  shift_query_num_tokens, forbidden_titles_path, future_retrieval=False):
         super(SparseRetriever, self).__init__(tokenizer=tokenizer)
-        self.searcher = LuceneSearcher.from_prebuilt_index(index_name)
+        self.searcher = self._get_searcher(index_name)
         self.num_tokens_for_query = num_tokens_for_query
         self.shift_query_num_tokens = shift_query_num_tokens
         self.future_retrieval = future_retrieval
 
         self.forbidden_titles = self._get_forbidden_titles(forbidden_titles_path)
+
+    def _get_searcher(self, index_name):
+        try:
+            return LuceneSearcher.from_prebuilt_index(index_name, verbose=True)
+        except ValueError:
+            print(f"Attempting to treat the index as a directory (not prebuilt by pyserini)")
+            return LuceneSearcher(index_name)
 
     def _get_forbidden_titles(self, forbidden_titles_path):
         if forbidden_titles_path is None:

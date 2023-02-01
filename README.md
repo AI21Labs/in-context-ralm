@@ -1,6 +1,6 @@
-# In-Context RALM
+# In-Context Retrieval-Augmented Language Models
 
-This repo contains the code for reproducing the experiments from [AI21 Labs](https://www.ai21.com/)' paper [In-Context Retrieval-Augmented Language Models](https://uploads-ssl.webflow.com/60fd4503684b466578c0d307/63c6c20dec4479564db21819_NEW_In_Context_Retrieval_Augmented_Language_Models.pdf).
+This repo contains the code for reproducing the experiments from [AI21 Labs](https://www.ai21.com/)' paper [In-Context Retrieval-Augmented Language Models](https://uploads-ssl.webflow.com/60fd4503684b466578c0d307/63c6c20dec4479564db21819_NEW_In_Context_Retrieval_Augmented_Language_Models.pdf) (In-Context RALM).
 
 Our code is mainly based on the [Transformers](https://github.com/huggingface/transformers/), [Pyserini](https://github.com/castorini/pyserini) and [Faiss](https://github.com/facebookresearch/faiss/) libraries.  
 We test it on Python 3.8.
@@ -8,7 +8,6 @@ We test it on Python 3.8.
 
 ## Table of Contents
 - [Setup](#setup)
-- [Corpus Preparation](#corpus-preparation)
 - [Retrieval](#retrieval)
   - [BM25](#bm25)
   - [Dense Retrievers](#dense-retrievers)
@@ -22,8 +21,6 @@ To install the required libraries in our repo, run:
 pip install -r requirements.txt
 ```
 
-## Corpus Preparation
-
 ## Retrieval
 
 ### BM25
@@ -33,11 +30,14 @@ python prepare_retrieval_data.py \
 --retrieval_type sparse \
 --tokenizer_name $MODEL_NAME \
 --max_length 1024 \
---dataset_path $DATASET_PATH \
+--dataset_path wikitext \
+--dataset_name wikitext-103-v1 \
+--dataset_split {validation, test} \
+--forbidden_titles_path ralm/retrievers/wikitext103_forbidden_titles.txt \
 --stride 4 \
 --output_file $RETRIEVAL_FILE \
 --num_tokens_for_query 32 \
---num_docs 16
+--num_docs 16 
 ```
 
 ### Dense Retrievers
