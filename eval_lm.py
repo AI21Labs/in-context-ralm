@@ -5,6 +5,7 @@ import pickle
 
 import numpy as np
 import torch
+import transformers
 from torch.nn import CrossEntropyLoss
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoConfig
@@ -243,6 +244,7 @@ def main(args):
         with open(args.dataset_path, "r") as f:
             dataset = f.read()
 
+    transformers.logging.set_verbosity_error()
     retrieval_dataset = None
     if args.retrieved_file is not None:
         with open(args.retrieved_file, "r") as f:

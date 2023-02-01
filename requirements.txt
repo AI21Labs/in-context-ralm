@@ -1,8 +1,6 @@
 torch==1.12.1
 numpy
 datasets
-faiss-cpu
 pyserini
 transformers==4.24.0
-wikipedia
 accelerate

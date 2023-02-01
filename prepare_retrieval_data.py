@@ -2,6 +2,7 @@ import json
 import sys
 import argparse
 
+import transformers
 from datasets import load_dataset
 from tqdm import tqdm
 from transformers import AutoTokenizer
@@ -29,6 +30,8 @@ def main(args):
     else:
         with open(args.dataset_path, "r") as f:
             dataset = f.read()
+
+    transformers.logging.set_verbosity_error()
     encodings = tokenizer(dataset, add_special_tokens=False, return_tensors="pt")
     dataset_len = encodings.input_ids.size(1)
     print("Dataset length:", dataset_len)
