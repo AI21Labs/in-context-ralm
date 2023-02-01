@@ -275,6 +275,7 @@ if __name__ == '__main__':
     parser.add_argument("--max_length", type=int, default=None)
     parser.add_argument("--stride", type=int, default=4)
     parser.add_argument("--cache_dir", type=str, default=None)
+    parser.add_argument("--model_parallelism", action="store_true")
 
     # Dataset params
     parser.add_argument("--load_from", type=str, choices=["hf", "file"], default="hf")
