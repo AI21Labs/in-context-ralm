@@ -1,0 +1,6 @@
+torch==1.12.1
+numpy
+datasets
+pyserini
+transformers==4.24.0
+accelerate
