@@ -6,13 +6,10 @@ from pyserini.search.lucene import LuceneSearcher
 
 
 class SparseRetriever(BaseRetriever):
-    def __init__(self, tokenizer, index_name, num_tokens_for_query,
-                 shift_query_num_tokens, forbidden_titles_path, future_retrieval=False):
+    def __init__(self, tokenizer, index_name, num_tokens_for_query, forbidden_titles_path):
         super(SparseRetriever, self).__init__(tokenizer=tokenizer)
         self.searcher = self._get_searcher(index_name)
         self.num_tokens_for_query = num_tokens_for_query
-        self.shift_query_num_tokens = shift_query_num_tokens
-        self.future_retrieval = future_retrieval
 
         self.forbidden_titles = self._get_forbidden_titles(forbidden_titles_path)
 
@@ -53,18 +50,10 @@ class SparseRetriever(BaseRetriever):
             k *= 2
 
     def _get_query_string(self, sequence_input_ids, target_begin_location, target_end_location, title=None):
-        if self.future_retrieval:
-            query_str = self.tokenizer.decode(sequence_input_ids[0, target_begin_location:target_end_location])
-        else:
-            # We isolate the prefix to make sure that we don't take tokens from the future:
-            prefix_tokens = sequence_input_ids[0, :target_begin_location]
-            if self.shift_query_num_tokens == 0:
-                query_tokens = prefix_tokens[-self.num_tokens_for_query:]
-            else:
-                query_begin_loc = -self.shift_query_num_tokens - self.num_tokens_for_query
-                query_end_loc = -self.shift_query_num_tokens
-                query_tokens = prefix_tokens[query_begin_loc:query_end_loc]
-            query_str = self.tokenizer.decode(query_tokens)
+        # We isolate the prefix to make sure that we don't take tokens from the future:
+        prefix_tokens = sequence_input_ids[0, :target_begin_location]
+        query_tokens = prefix_tokens[-self.num_tokens_for_query:]
+        query_str = self.tokenizer.decode(query_tokens)
         return query_str
 
     def retrieve(self, sequence_input_ids, dataset, k=1):

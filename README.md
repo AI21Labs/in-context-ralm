@@ -33,6 +33,7 @@ python prepare_retrieval_data.py \
 --dataset_path wikitext \
 --dataset_name wikitext-103-v1 \
 --dataset_split {validation, test} \
+--index_name wikipedia-dpr \
 --forbidden_titles_path ralm/retrievers/wikitext103_forbidden_titles.txt \
 --stride 4 \
 --output_file $RETRIEVAL_FILE \

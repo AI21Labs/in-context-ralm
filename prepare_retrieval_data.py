@@ -56,8 +56,14 @@ def main(args):
         if end_loc >= dataset_len:
             break
 
-    retriever.batch_retrieve(encodings.input_ids, data, k=args.num_docs)
-    print(f"Finished processing {len(data)} strides, writing to {args.output_file}")
+    batch_size = 1000
+    for i in range(0, len(data), batch_size):
+        if i > 0:
+            print(f"Finished processing {i}/{len(data)} strides")
+        retriever.retrieve(encodings.input_ids, data[i:i+batch_size], k=args.num_docs)
+
+    print(f"Finished processing {len(data)}/{len(data)} strides")
+    print(f"Writing to {args.output_file}")
     with open(args.output_file, "w") as f:
         f.write(json.dumps(data, indent=4))
         f.write("\n")
