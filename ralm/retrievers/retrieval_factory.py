@@ -1,4 +1,3 @@
-
 def add_retriever_args(parser, retriever_type):
     if retriever_type == "sparse":
         parser.add_argument("--index_name", type=str, default="wikipedia-dpr")
@@ -30,6 +29,7 @@ def get_retriever(retriever_type, args, tokenizer):
             num_tokens_for_query=args.num_tokens_for_query,
         )
     elif retriever_type == "dense":
+        raise ValueError("We currently don't support dense retrieval, we will soon add this option.")
         from ralm.retrievers.dense_retrieval import DenseRetriever
         return DenseRetriever(
             tokenizer=tokenizer,
