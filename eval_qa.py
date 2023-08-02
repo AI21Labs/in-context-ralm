@@ -11,27 +11,24 @@ from ralm.file_utils import print_args
 from ralm.model_utils import load_model_and_tokenizer
 
 
-def normalize_question(question, should_be_lower=False):
+def normalize_question(question):
     if not question.endswith("?"):
         question = question + "?"
 
-    if should_be_lower:
-        return question[0].lower() + question[1:]
-    else:
-        return question[0].upper() + question[1:]
+    return question[0].lower() + question[1:]
 
 
 def build_qa_prompt(example, num_docs=1):
     if num_docs == 0:
-        question_text = normalize_question(example["question"], should_be_lower=False)
+        question_text = normalize_question(example["question"])
         ex_prompt = f"Answer these questions:\nQ: {question_text}\nA:"
     elif num_docs == 1:
-        q = normalize_question(example["question"], should_be_lower=False)
+        q = normalize_question(example["question"])
         title = example['ctxs'][0]['title']
         text = example['ctxs'][0]['text']
         ex_prompt = f"{title}\n\n{text}\n\nBased on this text, answer these questions:\nQ: {q}\nA:"
     else:
-        q = normalize_question(example["question"], should_be_lower=False)
+        q = normalize_question(example["question"])
         docs_text = "\n\n".join([f"{ctx['title']}\n\n{ctx['text']}" for ctx in example["ctxs"][:num_docs]])
         ex_prompt = f"{docs_text}\n\nBased on these texts, answer these questions:\nQ: {q}\nA:"
 
