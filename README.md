@@ -14,6 +14,7 @@ We test it on Python 3.8.
   - [Evaluate models w/o retrieval](#evaluate-models-wo-retrieval)
   - [Evaluate models with retrieval](#evaluate-models-with-retrieval)
   - [Evaluate models with reranking](#reranking)
+- [Question Answering Experiments](#question-answering-experiments)
 - [Citation](#citation)
 
 ## Setup
@@ -121,6 +122,24 @@ python eval_lm.py \
 --ranking_logprob_past_tokens 16
 ```
 
+## Question Answering Experiments
+
+To run our QA experiments on Natural Questions, start by downloading the datasets augmented by DPR results:
+```bash
+wget https://dl.fbaipublicfiles.com/dpr/data/retriever_results/single/nq-test.json.gz
+gzip -d ./nq-test.json.gz
+```
+
+Then run the evaluation script:
+```bash
+python eval_qa.py \
+--model_name $MODEL_NAME \
+--dataset_path ./nq-test.json \
+--output_dir $OUTPUT_DIR \
+--num_docs [0,1,2] \
+[--model_parallelism]
+```
+where `num_docs` is the number of retrieved documents to include in-context (`num_docs=0` is the closed-book setting, `num_docs>=1` is open-book setting.)
 
 ## Citation
 
