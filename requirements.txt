@@ -2,5 +2,6 @@ torch==1.12.1
 numpy
 datasets
 pyserini
-transformers==4.24.0
+transformers==4.28.1
+tokenizers==0.13.3
 accelerate

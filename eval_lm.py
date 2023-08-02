@@ -8,10 +8,10 @@ import torch
 import transformers
 from torch.nn import CrossEntropyLoss
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer, AutoConfig
 from datasets import load_dataset
 
 from ralm.file_utils import print_args
+from ralm.model_utils import load_model_and_tokenizer
 
 
 def evaluate_logprob_with_retrieved_docs(
@@ -208,34 +208,16 @@ def main(args):
     if args.output_dir is not None:
         os.makedirs(args.output_dir)
     print_args(args, output_dir=args.output_dir)
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    device_count = torch.cuda.device_count()
-    data_parallel = device_count > 1 and not args.model_parallelism and args.retrieved_file is not None and \
-                    args.ranking_strategy in ["logprob", "oracle"]
 
-    config = AutoConfig.from_pretrained(args.model_name)
-    model_args = {
-        "cache_dir": args.cache_dir
-    }
-    if args.model_parallelism:
-        model_args["device_map"] = "auto"
-        model_args["low_cpu_mem_usage"] = True
-    if hasattr(config, "torch_dtype") and config.torch_dtype is not None:
-        model_args["torch_dtype"] = config.torch_dtype
-
-    model = AutoModelForCausalLM.from_pretrained(args.model_name, **model_args).eval()
-    if not args.model_parallelism:
-        model = model.to(device)
-    tokenizer = AutoTokenizer.from_pretrained(args.model_name)
+    model, tokenizer, config, device = load_model_and_tokenizer(
+        args.model_name, model_parallelism=args.model_parallelism, cache_dir=args.cache_dir, auth_token=args.auth_token
+    )
 
     # Model context size (e.g., 1024 for GPT-2)
     max_length = args.max_length
     model_max_length = config.n_positions if hasattr(config, "n_positions") else config.max_position_embeddings
     if max_length is None or max_length > model_max_length:
         max_length = model_max_length
-
-    if data_parallel:
-        model = torch.nn.DataParallel(model)
 
     if args.load_from == "hf":
         dataset = load_dataset(args.dataset_path, args.dataset_name, split=args.dataset_split)
@@ -278,6 +260,7 @@ if __name__ == '__main__':
     parser.add_argument("--stride", type=int, default=4)
     parser.add_argument("--cache_dir", type=str, default=None)
     parser.add_argument("--model_parallelism", action="store_true")
+    parser.add_argument("--auth_token", type=str, default=None)
 
     # Dataset params
     parser.add_argument("--load_from", type=str, choices=["hf", "file"], default="hf")

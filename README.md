@@ -1,7 +1,6 @@
 # In-Context Retrieval-Augmented Language Models
 
-This repo contains the code for reproducing the experiments on *WikiText-103* from [AI21 Labs](https://www.ai21.com/)' paper [In-Context Retrieval-Augmented Language Models](https://arxiv.org/abs/2302.00083) (In-Context RALM).  
-We currently examine whether we can share the code for the other datasets and corpora (in terms of licensing).
+This repo contains the code for reproducing the experiments on *WikiText-103* from [AI21 Labs](https://www.ai21.com/)' paper [In-Context Retrieval-Augmented Language Models](https://arxiv.org/abs/2302.00083) (In-Context RALM), to appear in the Transactions of the Association for Computational Linguistics (TACL).
 
 Our code is mainly based on the [Transformers](https://github.com/huggingface/transformers/) and [Pyserini](https://github.com/castorini/pyserini) libraries.  
 We test it on Python 3.8.
@@ -132,5 +131,6 @@ If you find our paper or code helpful, please cite our paper:
   title = {In-Context Retrieval-Augmented Language Models},
   year = {2023},
   url = {https://arxiv.org/abs/2302.00083},
+  journal = {Transactions of the Association for Computational Linguistics}
 }
 ```
