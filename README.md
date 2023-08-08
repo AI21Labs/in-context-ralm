@@ -50,10 +50,6 @@ python prepare_retrieval_data.py \
 --num_docs 16 
 ```
 
-### Dense Retrievers
-
-We will soon add the code to reproduce our dense retrieval experiments. 
-
 ## Evaluation
 
 ### List of Language Models
