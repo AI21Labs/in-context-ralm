@@ -125,12 +125,16 @@ To run our QA experiments on Natural Questions, start by downloading the dataset
 wget https://dl.fbaipublicfiles.com/dpr/data/retriever_results/single/nq-test.json.gz
 gzip -d ./nq-test.json.gz
 ```
+To run our QA experiments on TriviaQA, install `gsutil` and copy the DPR-augmented dataset:
+```bash
+gsutil cp gs://ai21-publishing-public-models/in-context-ralm/trivia-test-dpr-results.json ./trivia-test.json
+```
 
 Then run the evaluation script:
 ```bash
 python eval_qa.py \
 --model_name $MODEL_NAME \
---dataset_path ./nq-test.json \
+--dataset_path [nq-test.json,trivia-test.json] \
 --output_dir $OUTPUT_DIR \
 --num_docs [0,1,2] \
 [--model_parallelism]
