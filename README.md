@@ -145,11 +145,22 @@ where `num_docs` is the number of retrieved documents to include in-context (`nu
 
 If you find our paper or code helpful, please cite our paper:
 ```
-@article{ram2023ralm,
-  author = {Ori Ram and Yoav Levine and Itay Dalmedigos and Dor Muhlgay and Amnon Shashua and Kevin Leyton-Brown and Yoav Shoham},
-  title = {In-Context Retrieval-Augmented Language Models},
-  year = {2023},
-  url = {https://arxiv.org/abs/2302.00083},
-  journal = {Transactions of the Association for Computational Linguistics}
+@article{ram-etal-2023-context,
+    title = "In-Context Retrieval-Augmented Language Models",
+    author = "Ram, Ori  and
+      Levine, Yoav  and
+      Dalmedigos, Itay  and
+      Muhlgay, Dor  and
+      Shashua, Amnon  and
+      Leyton-Brown, Kevin  and
+      Shoham, Yoav",
+    journal = "Transactions of the Association for Computational Linguistics",
+    volume = "11",
+    year = "2023",
+    address = "Cambridge, MA",
+    publisher = "MIT Press",
+    url = "https://aclanthology.org/2023.tacl-1.75",
+    doi = "10.1162/tacl_a_00605",
+    pages = "1316--1331",
 }
 ```
